@@ -29,9 +29,9 @@ public class HolaMundoServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        /*response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            //TODO output your page here. You may use following sample code. 
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -41,7 +41,7 @@ public class HolaMundoServlet extends HttpServlet {
             out.println("<h1>Servlet HolaMundoServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
-        }
+        }*/
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -70,6 +70,25 @@ public class HolaMundoServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String usuario = request.getParameter("usuario");
+        String password = request.getParameter("password");
+        PrintWriter out = response.getWriter();
+        
+        
+        System.out.println("name: "+ usuario + "\t Password: "+ password);
+        
+        out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet HolaMundoServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h3>Usuario" + request.getParameter("usuario")+ "</h3>");
+            out.println("<h3>Passwod" + request.getParameter("password")+ "</h3>");
+            
+            out.println("</body>");
+            out.println("</html>");
+        
         processRequest(request, response);
     }
 
