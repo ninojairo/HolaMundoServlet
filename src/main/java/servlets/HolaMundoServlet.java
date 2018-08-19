@@ -8,9 +8,11 @@ package servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -70,25 +72,140 @@ public class HolaMundoServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        //Elementos
         String usuario = request.getParameter("usuario");
         String password = request.getParameter("password");
+        String[] tecnologias = request.getParameterValues("tecnologia");
+        String genero = request.getParameter("genero");
+        String[] musicas = request.getParameterValues("musica");
+        String passwordDefault = "123456";
         PrintWriter out = response.getWriter();
+
+        System.out.println("name: " + usuario + "\t Password: " + password);
+
+        //Manejo cookies 
+        Cookie[] cookies = request.getCookies();
+        boolean usuarioNuevo = true;
+        String mensaje=null;
+
+        if (cookies != null) {
+            for (Cookie c : cookies) {
+                if (c.getName().equals("visitanteRecurrente") && c.getValue().equals("si")) {
+                    usuarioNuevo = false;
+                    break;
+                }
+            }
+        }
+
+        if (usuarioNuevo) {
+            Cookie visitante = new Cookie("visitanreRecurrente", "si");
+            response.addCookie(visitante);
+            mensaje = "Bienvenido por primera vez";
+        } else {
+            mensaje = "Bienvenido de nuevo";
+        }
+        
+        //Manejo Session
+        String mensajeSesion;
+        HttpSession httpSession = request.getSession();
+        Integer contadorVisitas = (Integer)(httpSession.getAttribute("contadorVisitas"));
+        
+        System.out.println("contadorVisitasEntra: " +contadorVisitas);
+        
+        if (contadorVisitas == null){
+            contadorVisitas=1;
+            mensajeSesion ="Hola por primera vez";
+        }
+        else{
+            contadorVisitas++;
+            mensajeSesion ="Hola otra vez";
+        }
+        
+        httpSession.setAttribute("contadorVisitas", contadorVisitas);
+        System.out.println("contadorVisitasSale: " +contadorVisitas);
         
         
-        System.out.println("name: "+ usuario + "\t Password: "+ password);
         
-        out.println("<!DOCTYPE html>");
+        
+
+        if (password.equals(passwordDefault)) {
+            out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HolaMundoServlet</title>");            
+            out.println("<title>Servlet HolaMundoServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h3>Usuario" + request.getParameter("usuario")+ "</h3>");
-            out.println("<h3>Passwod" + request.getParameter("password")+ "</h3>");
+
+            out.println("<h1>Parametros procesados por el servlet</h1>");
+            out.println("<h2>" + mensaje + "</h2>");
             
+            out.println("<h2>" + mensajeSesion + "</h2>");
+            out.println("<h2>" + "Numero Visitas" + contadorVisitas + "</h2>");
+            
+
+            out.println("<table border='1'>");
+            out.println("<tr>");
+            out.println("<td>");
+            out.println("Usuario");
+            out.println("</td>");
+            out.println("<td>");
+            out.println(usuario);
+            out.println("</td>");
+            out.println("</tr>");
+
+            out.println("<tr>");
+            out.println("<td>");
+            out.println("Password");
+            out.println("</td>");
+            out.println("<td>");
+            out.println(password);
+            out.println("</td>");
+            out.println("</tr>");
+
+            out.println("<tr>");
+            out.println("<td>");
+            out.println("Genero");
+            out.println("</td>");
+            out.println("<td>");
+            out.println(genero);
+            out.println("</td>");
+            out.println("</tr>");
+
+            out.println("<tr>");
+            out.println("<td>");
+            out.println("Tecnologia");
+            out.println("</td>");
+            out.println("<td>");
+            for (String tecnologia : tecnologias) {
+                out.println(tecnologia);
+            }
+
+            out.println("</td>");
+            out.println("</tr>");
+
+            out.println("<tr>");
+            out.println("<td>");
+            out.println("Musica");
+            out.println("</td>");
+            out.println("<td>");
+            if (musicas != null) {
+                for (String musica : musicas) {
+                    out.println(musica);
+                }
+            }
+
+            out.println("</td>");
+            out.println("</tr>");
+            out.println("</table>");
+
             out.println("</body>");
             out.println("</html>");
-        
+
+        } else {
+            response.sendError(response.SC_UNAUTHORIZED, "Password Incorrecto");
+        }
+
         processRequest(request, response);
     }
 

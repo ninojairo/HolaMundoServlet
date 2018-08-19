@@ -3,16 +3,64 @@
     <head>
         <title>Start Page</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="recursos/estilos.css">
+        <script type="text/javascript" src="recursos/funciones.js"></script>
+        
     </head>
     <body>
-        <h1>Hello Servlets World!</h1>
-        <a href="/HolaMundoServlet/HolaMundoServlet">Hola Mundo Servlet</a>
-        
-        <form action="/HolaMundoServlet/HolaMundoServlet" method="POST">
-            Usuario: <input name="usuario" type="text"><br>
-            Password: <input name="password" type="password"><br>
-            <input type="submit" value="Submit">
+        <h1>Information</h1>
+        <div>
+            <form name="formulario"  action="/HolaMundoServlet/HolaMundoServlet" method="POST" onsubmit="return validarForma(this);">
+            
+            <table>
+                <tr>
+                    <td>Usuario (*)</td>
+                    <td><input name="usuario" type="text" value="Escribir Usuario" onfocus="this.select();"/></td>
+                </tr>
+                <tr>
+                    <td>Password (*)</td>
+                    <td><input name="password" type="password" value="Escribir Password" onfocus="this.select();"/></td>
+                </tr>
+                <tr>
+                    <td>Genero (*)</td>
+                    <td>Masculino<input type="radio" name="genero" value="M"/>&nbsp;&nbsp;Femenino<input type="radio" name="genero" value="M"/></td>
+                </tr>
+                <tr>
+                    <td>Tecnologias</td>
+                    <td>Java<input type="checkbox" name="tecnologia" value="Java"/>&nbsp;&nbsp;
+                        Angular<input type="checkbox" name="tecnologia" value="Angular"/>&nbsp;&nbsp;
+                        .Net<input type="checkbox" name="tecnologia" value=".Net"/>&nbsp;&nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td>Musica</td>
+                    <td>
+                        <select name="musica">
+                            <option value="">Seleccione</option>
+                            <option value="Rock">Rock</option>
+                            <option value="Salsa">Salsa</option>
+                            
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Comentarios</td>
+                    <td>
+                        <textarea name="comentarios">Comentarios</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="reset" value="Limpiar" name="reset"/></td>
+                    <td><input type="submit" value="Enviar" name="submit"/></td>
+                </tr>
+                
+            
+            
+            </table>
             
         </form>
+            
+        </div>
+        
     </body>
 </html>
